@@ -1,8 +1,8 @@
 ## This is memo for initial rasberry pi setup (raspbian 11.2).
 ### change root password
-'''
+```
 sudo passwd root
-'''
+```
 
 ### add user
 '''
