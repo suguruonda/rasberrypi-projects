@@ -131,6 +131,12 @@ reboot
 mkdir ~/.ssh
 cmod 700 ~/.ssh
 ```
+#### Add ip address in hosts file at "client PC"
+```
+sudo nano /etc/hosts
+add this
+Ip_address hostname
+```
 #### make ssh key at "client PC"
 ```
 ssh-keygen -t rsa
