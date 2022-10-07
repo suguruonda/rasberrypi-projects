@@ -148,6 +148,7 @@ ssh username@hostname -i sshkey_path
 ```
 #### change ssh setting at "rasberry pi"
 ```
+cd /etc/ssh
 sudo cp sshd_config sshd_config.old
 ```
 ```
