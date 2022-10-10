@@ -177,7 +177,7 @@ nano config
 ##### add this
 ```
 Host hostnameofrasberrypi
-  HostName hostnameofrasberrypi
+  HostName ip_address_of_host_raspberrypi
   IdentityFile ~/.ssh/your_sshkey_filename
   User username
   Port portnumber
