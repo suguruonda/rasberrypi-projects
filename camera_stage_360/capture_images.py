@@ -58,8 +58,9 @@ class Camerastage:
             
         for x in range(self.step_count):
             if x % rotation_step == 0:
-                self.shooting_an_image()
-                
+                #self.shooting_an_image()
+                sleep(self.delay)
+                pass 
             GPIO.output(self.STEP, GPIO.HIGH)
             sleep(self.delay)
             GPIO.output(self.STEP, GPIO.LOW)
@@ -68,8 +69,8 @@ class Camerastage:
 
 if __name__ == "__main__":
     
-    DIR = 21 #Direction GPIO Pin
-    STEP = 20 #Step GPIO Pin
+    DIR = 20 #Direction GPIO Pin
+    STEP = 21 #Step GPIO Pin
     MODE1 = 13 #Microstep Resolution GPIO Pins
     MODE2 = 19 #Microstep Resolution GPIO Pins
     MODE3 = 26 #Microstep Resolution GPIO Pins

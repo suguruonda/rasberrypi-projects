@@ -1,6 +1,7 @@
-from time import sleep
 import RPi.GPIO as GPIO
+from time import sleep
 
+SW = 5
 DIR = 20 #Direction GPIO Pin
 STEP = 21 #Step GPIO Pin
 CW =1 #Clockwise Rotaion
@@ -11,6 +12,8 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(DIR, GPIO.OUT)
 GPIO.setup(STEP, GPIO.OUT)
 GPIO.output(DIR, CW)
+GPIO.setup(SW, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
 
 MODE = (13,19,26) #Microstep Resolution GPIO Pins
 GPIO.setup(MODE, GPIO.OUT)
@@ -37,20 +40,16 @@ delay = .005 / RESOLUTION_MICROSTEP[RESOLUTION_MODE]
 
 rotation_num = 20
 
-for x in range(step_count*rotation_num):
-    GPIO.output(STEP, GPIO.HIGH)
-    sleep(delay)
-    GPIO.output(STEP, GPIO.LOW)
-    sleep(delay)
+try:
+    while True:
+        if GPIO.input(SW) == GPIO.LOW:
+            #print("ON")
+            GPIO.output(STEP, GPIO.HIGH)
+            sleep(delay)
+            GPIO.output(STEP, GPIO.LOW)
+            sleep(delay)
+            #sleep(0.15)
 
-sleep(.5)
-GPIO.output(DIR, CCW)
-for x in range(step_count*rotation_num):
-    GPIO.output(STEP, GPIO.HIGH)
-    sleep(delay)
-    GPIO.output(STEP, GPIO.LOW)
-    sleep(delay)
-
-
-GPIO.cleanup()
-
+except KeyboardInterrupt:
+    GPIO.cleanup()
+    print(" Stop")

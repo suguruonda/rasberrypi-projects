@@ -2,15 +2,16 @@ import RPi.GPIO as GPIO
 import time
 
 interval_time = 0.5
-loop_num = 3
+loop_num = 1
 
-SRCLR = 26
-SRCLK = 19
-RCLK = 13
-SI = 6
+OE = 4
+SRCLK = 17
+RCLK = 27
+SI = 22
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup([SRCLR, SRCLK, RCLK, SI], GPIO.OUT, initial = GPIO.LOW)
+GPIO.setup(OE, GPIO.OUT, initial = GPIO.HIGH)
+GPIO.setup([SRCLK, RCLK, SI], GPIO.OUT, initial = GPIO.LOW)
 
 def fire():
   GPIO.output(RCLK, GPIO.HIGH)
@@ -20,17 +21,18 @@ def shift():
   GPIO.output(SRCLK, GPIO.HIGH)
   GPIO.output(SRCLK, GPIO.LOW)
 
-def reset():
-  GPIO.output(SRCLR, GPIO.LOW)
+def output_disable():
+  GPIO.output(OE, GPIO.HIGH)
+
+def output_enable():
+  bit_val = 0b1111111111111111
+  send_bits(bit_val)
   fire()
-  GPIO.output(SRCLR, GPIO.HIGH)
-  GPIO.output([SRCLK, RCLK, SI], GPIO.LOW)
-
-
+  GPIO.output(OE, GPIO.LOW)
 
 def send_bits(data):
   for i in range(16): 
-    GPIO.output(SI, ((1 << i ) & data))
+    GPIO.output(SI, (data >> i ) & 1)
     shift()
 
 def lighting(num):
@@ -38,16 +40,21 @@ def lighting(num):
   fire()
   print(bin(num))
 
+
 try:
   print("start")
-  reset()
+  output_enable()
   for num in range(loop_num):
-    lighting(0b1101100101000101)
+    lighting(0b11111111 * 0b100000000 + 0b11111111)
     time.sleep(interval_time)
-    reset()
+    lighting(0b00000000 * 0b100000000 + 0b11111111)
+    time.sleep(interval_time)
+         
+    #lighting(0b1000000000000000)
+    time.sleep(interval_time)
     time.sleep(interval_time)
 
 finally:
   print("finish")
-  reset()
+  output_disable()
   GPIO.cleanup()
