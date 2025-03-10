@@ -131,12 +131,6 @@ reboot
 mkdir ~/.ssh
 cmod 700 ~/.ssh
 ```
-#### Add ip address in hosts file at "client PC"
-```
-sudo nano /etc/hosts
-add this
-Ip_address hostname
-```
 #### make ssh key at "client PC"
 ```
 ssh-keygen -t rsa
@@ -154,7 +148,6 @@ ssh username@hostname -i sshkey_path
 ```
 #### change ssh setting at "rasberry pi"
 ```
-cd /etc/ssh
 sudo cp sshd_config sshd_config.old
 ```
 ```
@@ -177,7 +170,7 @@ nano config
 ##### add this
 ```
 Host hostnameofrasberrypi
-  HostName ip_address_of_host_raspberrypi
+  HostName hostnameofrasberrypi
   IdentityFile ~/.ssh/your_sshkey_filename
   User username
   Port portnumber
